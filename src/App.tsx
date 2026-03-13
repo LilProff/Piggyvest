@@ -33,7 +33,9 @@ const fmt = (n: number) => "₦" + Number(n).toLocaleString("en-NG", { minimumFr
 const Icon = ({ name, size = 22, color = "currentColor" }: { name: string, size?: number, color?: string }) => {
   const icons: Record<string, React.JSX.Element> = {
     home: <><path d="M3 9.5L12 3l9 6.5V20a1 1 0 01-1 1H4a1 1 0 01-1-1V9.5z" stroke={color} strokeWidth="1.8" fill="none"/><rect x="9" y="13" width="6" height="8" rx="1" stroke={color} strokeWidth="1.8" fill="none"/></>,
-    piggy: <><path d="M19 11c0-4-3.13-7-7-7S5 7 5 11c0 1.85.68 3.54 1.79 4.85L6 19h2.5l.5-1.5h6l.5 1.5H18l-.79-3.15A6.95 6.95 0 0019 11z" stroke={color} strokeWidth="1.8" fill="none"/><circle cx="15" cy="10" r="1" fill={color}/><path d="M19 10h2" stroke={color} strokeWidth="1.8" strokeLinecap="round"/></>,
+    piggy: <><path d="M19 11c0-4-3.13-7-7-7S5 7 5 11c0 1.85.68 3.54 1.79 4.85L6 19h2.5l.5-1.5h6l.5 1.5H18l-.79-3.15A6.95 6.95 0 0019 11z" stroke={color} strokeWidth="1.8" fill={color === "#fff" ? "#fff" : "none"}/><circle cx="15" cy="10" r="1" fill={color === "#fff" ? "#0D60D8" : color}/><path d="M19 10h2" stroke={color} strokeWidth="1.8" strokeLinecap="round"/></>,
+    save: <><path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z" stroke={color} strokeWidth="1.8" fill="none"/><polyline points="17 21 17 13 7 13 7 21" stroke={color} strokeWidth="1.8" fill="none"/><polyline points="7 3 7 8 15 8" stroke={color} strokeWidth="1.8" fill="none"/></>,
+    user: <><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2" stroke={color} strokeWidth="1.8" strokeLinecap="round"/><circle cx="12" cy="7" r="4" stroke={color} strokeWidth="1.8" fill="none"/></>,
     card: <><rect x="2" y="5" width="20" height="14" rx="2" stroke={color} strokeWidth="1.8" fill="none"/><line x1="2" y1="10" x2="22" y2="10" stroke={color} strokeWidth="1.8"/><line x1="6" y1="15" x2="10" y2="15" stroke={color} strokeWidth="1.8" strokeLinecap="round"/></>,
     trend: <><polyline points="22 7 13.5 15.5 8.5 10.5 2 17" stroke={color} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/><polyline points="16 7 22 7 22 13" stroke={color} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/></>,
     pay: <><circle cx="12" cy="12" r="9" stroke={color} strokeWidth="1.8" fill="none"/><path d="M8 12h8M14 9l3 3-3 3" stroke={color} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/></>,
@@ -104,14 +106,11 @@ function SplashScreen() {
       }}
     >
       <div style={{ flex: 1, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center" }}>
-        <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-          <svg width="60" height="60" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <rect x="10" y="35" width="80" height="55" rx="15" fill="white" />
-            <path d="M30 35V25a20 20 0 1140 0v10" stroke="white" strokeWidth="12" strokeLinecap="round" />
-            <circle cx="50" cy="62" r="10" fill="#0D60D8" />
-            <rect x="45" y="62" width="10" height="15" fill="#0D60D8" />
-          </svg>
-          <span style={{ fontSize: 44, fontWeight: 900, letterSpacing: -2 }}>piggyvest</span>
+        <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 16 }}>
+          <div style={{ width: 100, height: 100, borderRadius: 32, background: "#fff", display: "flex", alignItems: "center", justifyContent: "center", boxShadow: "0 20px 40px rgba(0,0,0,0.2)" }}>
+            <Icon name="piggy" size={64} color="#0D60D8" />
+          </div>
+          <span style={{ fontSize: 48, fontWeight: 900, letterSpacing: -2.5, color: "#fff" }}>piggyvest</span>
         </div>
       </div>
       
@@ -158,11 +157,11 @@ function PinScreen({ onUnlock }: { onUnlock: () => void }) {
   return (
     <div style={{ minHeight: "100vh", background: "linear-gradient(160deg,#001533,#0A4BB3 50%,#0D60D8)", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "0 28px", fontFamily: "system-ui,sans-serif" }}>
       <div style={{ marginBottom: 40, textAlign: "center" }}>
-        <div style={{ width: 66, height: 66, borderRadius: 20, background: "#fff", display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 14px", boxShadow: "0 8px 28px rgba(0,0,0,0.25)" }}>
-          <Icon name="piggy" size={34} color="#0D60D8" />
+        <div style={{ width: 72, height: 72, borderRadius: 24, background: "#fff", display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 16px", boxShadow: "0 12px 32px rgba(0,0,0,0.3)" }}>
+          <Icon name="piggy" size={40} color="#0D60D8" />
         </div>
         <div style={{ color: "rgba(255,255,255,0.65)", fontSize: 12, marginBottom: 4 }}>Welcome back</div>
-        <div style={{ color: "#fff", fontSize: 17, fontWeight: 700, letterSpacing: 0.5 }}>{PHONE}</div>
+        <div style={{ color: "#fff", fontSize: 18, fontWeight: 700, letterSpacing: 0.5 }}>{PHONE}</div>
       </div>
       <div style={{ display: "flex", gap: 20, marginBottom: 46, animation: shake ? "shake 0.5s ease" : "none" }}>
         {dots.map((f, i) => <div key={i} style={{ width: 15, height: 15, borderRadius: "50%", background: f ? "#fff" : "rgba(255,255,255,0.25)", border: "2px solid rgba(255,255,255,0.5)", transition: "all 0.15s", transform: f ? "scale(1.15)" : "scale(1)" }} />)}
@@ -453,19 +452,34 @@ function Dashboard({ onNavigate }: { onNavigate: (s: string) => void }) {
     <div style={{ paddingBottom: 100 }}>
       <div style={S.header}>
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 24 }}>
-          <div>
-            <div style={{ color: "rgba(255,255,255,0.7)", fontSize: 11, fontWeight: 700, textTransform: "uppercase", letterSpacing: 1, marginBottom: 4 }}>Total Balance</div>
-            <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-              <div style={{ color: "#fff", fontSize: 32, fontWeight: 900, letterSpacing: -0.5 }}>
-                {showBal ? fmt(183000) : "₦ ****"}
-              </div>
-              <button onClick={() => setShowBal(!showBal)} style={{ background: "rgba(255,255,255,0.2)", border: "none", borderRadius: 8, padding: 6, cursor: "pointer", display: "flex" }}>
-                <Icon name={showBal ? "eye" : "eyeoff"} size={16} color="#fff" />
-              </button>
+          <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+            <div style={{ width: 40, height: 40, borderRadius: "50%", background: "rgba(255,255,255,0.2)", display: "flex", alignItems: "center", justifyContent: "center" }}>
+              <Icon name="user" color="#fff" size={24} />
+            </div>
+            <div>
+              <div style={{ color: "#fff", fontSize: 18, fontWeight: 800 }}>Hello, {FULL_NAME.split(" ")[0]}</div>
+              <div style={{ color: "rgba(255,255,255,0.7)", fontSize: 11, fontWeight: 600 }}>Good morning ☀️</div>
             </div>
           </div>
-          <div style={{ width: 44, height: 44, borderRadius: 14, background: "rgba(255,255,255,0.15)", display: "flex", alignItems: "center", justifyContent: "center" }}>
-            <Icon name="bell" color="#fff" />
+          <div style={{ display: "flex", gap: 10 }}>
+            <div style={{ width: 40, height: 40, borderRadius: 12, background: "#fff", display: "flex", alignItems: "center", justifyContent: "center" }}>
+              <Icon name="piggy" color="#0D60D8" size={24} />
+            </div>
+            <div style={{ width: 40, height: 40, borderRadius: 12, background: "rgba(255,255,255,0.15)", display: "flex", alignItems: "center", justifyContent: "center" }}>
+              <Icon name="bell" color="#fff" size={20} />
+            </div>
+          </div>
+        </div>
+
+        <div style={{ marginBottom: 24 }}>
+          <div style={{ color: "rgba(255,255,255,0.7)", fontSize: 11, fontWeight: 700, textTransform: "uppercase", letterSpacing: 1, marginBottom: 4 }}>Total Balance</div>
+          <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+            <div style={{ color: "#fff", fontSize: 32, fontWeight: 900, letterSpacing: -0.5 }}>
+              {showBal ? fmt(183000) : "₦ ****"}
+            </div>
+            <button onClick={() => setShowBal(!showBal)} style={{ background: "rgba(255,255,255,0.2)", border: "none", borderRadius: 8, padding: 6, cursor: "pointer", display: "flex" }}>
+              <Icon name={showBal ? "eye" : "eyeoff"} size={16} color="#fff" />
+            </button>
           </div>
         </div>
 
