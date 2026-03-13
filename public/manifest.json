@@ -1,0 +1,21 @@
+{
+  "name": "PiggyVest Clone",
+  "short_name": "PiggyVest",
+  "description": "A production-ready clone of PiggyVest fintech app.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#00a859",
+  "theme_color": "#00a859",
+  "icons": [
+    {
+      "src": "https://picsum.photos/seed/piggy/192/192",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "https://picsum.photos/seed/piggy/512/512",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
