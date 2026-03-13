@@ -880,6 +880,28 @@ export default function App() {
   const [nav, setNav] = useState("home");
   const [comingSoon, setComingSoon] = useState<string | null>(null);
   const [showBanks, setShowBanks] = useState(false);
+  const [deferredPrompt, setDeferredPrompt] = useState<any>(null);
+  const [showInstallBtn, setShowInstallBtn] = useState(false);
+
+  useEffect(() => {
+    const handler = (e: any) => {
+      e.preventDefault();
+      setDeferredPrompt(e);
+      setShowInstallBtn(true);
+    };
+    window.addEventListener("beforeinstallprompt", handler);
+    return () => window.removeEventListener("beforeinstallprompt", handler);
+  }, []);
+
+  const handleInstall = async () => {
+    if (!deferredPrompt) return;
+    deferredPrompt.prompt();
+    const { outcome } = await deferredPrompt.userChoice;
+    if (outcome === "accepted") {
+      setShowInstallBtn(false);
+    }
+    setDeferredPrompt(null);
+  };
 
   if (screen === "pin") return <PinScreen onUnlock={() => setScreen("main")} />;
 
@@ -970,6 +992,17 @@ export default function App() {
             </div>
           </div>
           <div style={{ display: "grid", gap: 1 }}>
+            {showInstallBtn && (
+              <div onClick={handleInstall} style={{ padding: "18px 0", borderBottom: "1px solid #f3f4f6", display: "flex", justifyContent: "space-between", alignItems: "center", cursor: "pointer" }}>
+                <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+                  <div style={{ width: 32, height: 32, borderRadius: 10, background: "#ecfdf5", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                    <Icon name="topup" color="#059669" size={18} />
+                  </div>
+                  <span style={{ fontWeight: 700, color: "#059669" }}>Install PiggyVest App</span>
+                </div>
+                <Icon name="back" size={16} color="#9ca3af" />
+              </div>
+            )}
             {["My Profile", "Linked Bank Accounts", "Security Settings", "Refer & Earn", "Help Center", "Logout"].map(m => (
               <div key={m} onClick={() => {
                 if (m === "Logout") setScreen("pin");
