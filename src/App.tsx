@@ -1,5 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "motion/react";
+import * as XLSX from 'xlsx';
+import jsPDF from 'jspdf';
+import autoTable from 'jspdf-autotable';
 
 const PIN = "2723";
 const PHONE = "08022324523";
@@ -762,49 +765,118 @@ function TopUpModal({ onClose }: { onClose: () => void }) {
 function ExportModal({ onClose }: { onClose: () => void }) {
   const [format, setFormat] = useState("pdf");
   const [exporting, setExporting] = useState(false);
+  const [success, setSuccess] = useState(false);
 
   const handleExport = () => {
     setExporting(true);
+    
     setTimeout(() => {
-      setExporting(false);
-      onClose();
-      alert(`Statement exported successfully as ${format.toUpperCase()}`);
-    }, 2000);
+      try {
+        if (format === "excel") {
+          const data = TXS.map(tx => ({
+            "Date": tx.date,
+            "Description": tx.label,
+            "Type": tx.type.toUpperCase(),
+            "Amount (NGN)": tx.amount,
+            "Balance (NGN)": tx.balance
+          }));
+          const ws = XLSX.utils.json_to_sheet(data);
+          const wb = XLSX.utils.book_new();
+          XLSX.utils.book_append_sheet(wb, ws, "Transactions");
+          XLSX.writeFile(wb, `PiggyVest_Statement_${new Date().toISOString().split('T')[0]}.xlsx`);
+        } else {
+          const doc = new jsPDF();
+          
+          // Header
+          doc.setFontSize(20);
+          doc.setTextColor(13, 96, 216); // #0D60D8
+          doc.text("piggyvest", 14, 20);
+          
+          doc.setFontSize(16);
+          doc.setTextColor(0, 0, 0);
+          doc.text("Transaction Statement", 14, 30);
+          
+          doc.setFontSize(10);
+          doc.setTextColor(100, 100, 100);
+          doc.text(`Account Holder: ${FULL_NAME}`, 14, 40);
+          doc.text(`Generated on: ${new Date().toLocaleString()}`, 14, 45);
+          
+          const tableData = TXS.map(tx => [
+            tx.date,
+            tx.label,
+            tx.type.toUpperCase(),
+            `N${tx.amount.toLocaleString()}`,
+            `N${tx.balance.toLocaleString()}`
+          ]);
+
+          autoTable(doc, {
+            startY: 55,
+            head: [['Date', 'Description', 'Type', 'Amount', 'Balance']],
+            body: tableData,
+            theme: 'striped',
+            headStyles: { fillColor: [13, 96, 216] },
+            styles: { fontSize: 9 },
+          });
+          
+          doc.save(`PiggyVest_Statement_${new Date().toISOString().split('T')[0]}.pdf`);
+        }
+        setSuccess(true);
+      } catch (error) {
+        console.error("Export error:", error);
+      } finally {
+        setExporting(false);
+      }
+    }, 1500);
   };
 
   return (
     <div style={S.modalBg} onClick={onClose}>
       <motion.div initial={{ y: "100%" }} animate={{ y: 0 }} exit={{ y: "100%" }} style={S.modal} onClick={e => e.stopPropagation()}>
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 20 }}>
-          <div style={{ fontSize: 15, fontWeight: 800, color: "#111" }}>Export Statement</div>
-          <button onClick={onClose} style={{ background: "none", border: "none", fontSize: 20, color: "#9ca3af", cursor: "pointer" }}>✕</button>
-        </div>
-        <div style={{ marginBottom: 20 }}>
-          <div style={{ fontSize: 13, color: "#6b7280", marginBottom: 12 }}>Select Date Range</div>
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
-            <div>
-              <div style={{ fontSize: 11, color: "#9ca3af", marginBottom: 4 }}>Start Date</div>
-              <input type="date" defaultValue="2025-07-01" style={S.input} />
+        {success ? (
+          <div style={{ textAlign: "center", padding: "20px 0" }}>
+            <div style={{ width: 64, height: 64, borderRadius: "50%", background: "#eff6ff", display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 20px" }}>
+              <Icon name="check_circle" color="#0D60D8" size={32} />
             </div>
-            <div>
-              <div style={{ fontSize: 11, color: "#9ca3af", marginBottom: 4 }}>End Date</div>
-              <input type="date" defaultValue="2026-03-13" style={S.input} />
+            <h3 style={{ fontSize: 18, fontWeight: 800, color: "#111", marginBottom: 8 }}>Export Successful!</h3>
+            <p style={{ fontSize: 14, color: "#6b7280", marginBottom: 24, lineHeight: 1.5 }}>
+              Your transaction statement has been generated and downloaded as a <strong>{format.toUpperCase()}</strong> file.
+            </p>
+            <button style={S.btnPrimary} onClick={onClose}>Done</button>
+          </div>
+        ) : (
+          <>
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 20 }}>
+              <div style={{ fontSize: 15, fontWeight: 800, color: "#111" }}>Export Statement</div>
+              <button onClick={onClose} style={{ background: "none", border: "none", fontSize: 20, color: "#9ca3af", cursor: "pointer" }}>✕</button>
             </div>
-          </div>
-        </div>
-        <div style={{ marginBottom: 24 }}>
-          <div style={{ fontSize: 13, color: "#6b7280", marginBottom: 12 }}>Export Format</div>
-          <div style={{ display: "flex", gap: 12 }}>
-            {["pdf", "excel"].map(f => (
-              <button key={f} onClick={() => setFormat(f)} style={{ flex: 1, padding: "12px", borderRadius: 12, border: `2px solid ${format === f ? "#0D60D8" : "#f0f0f0"}`, background: format === f ? "#eff6ff" : "#fff", color: format === f ? "#0D60D8" : "#6b7280", fontWeight: 700, fontSize: 13, cursor: "pointer", textTransform: "uppercase" }}>
-                {f}
-              </button>
-            ))}
-          </div>
-        </div>
-        <button style={S.btnPrimary} onClick={handleExport} disabled={exporting}>
-          {exporting ? "Generating..." : "Download Statement"}
-        </button>
+            <div style={{ marginBottom: 20 }}>
+              <div style={{ fontSize: 13, color: "#6b7280", marginBottom: 12 }}>Select Date Range</div>
+              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
+                <div>
+                  <div style={{ fontSize: 11, color: "#9ca3af", marginBottom: 4 }}>Start Date</div>
+                  <input type="date" defaultValue="2025-07-01" style={S.input} />
+                </div>
+                <div>
+                  <div style={{ fontSize: 11, color: "#9ca3af", marginBottom: 4 }}>End Date</div>
+                  <input type="date" defaultValue="2026-03-13" style={S.input} />
+                </div>
+              </div>
+            </div>
+            <div style={{ marginBottom: 24 }}>
+              <div style={{ fontSize: 13, color: "#6b7280", marginBottom: 12 }}>Export Format</div>
+              <div style={{ display: "flex", gap: 12 }}>
+                {["pdf", "excel"].map(f => (
+                  <button key={f} onClick={() => setFormat(f)} style={{ flex: 1, padding: "12px", borderRadius: 12, border: `2px solid ${format === f ? "#0D60D8" : "#f0f0f0"}`, background: format === f ? "#eff6ff" : "#fff", color: format === f ? "#0D60D8" : "#6b7280", fontWeight: 700, fontSize: 13, cursor: "pointer", textTransform: "uppercase" }}>
+                    {f}
+                  </button>
+                ))}
+              </div>
+            </div>
+            <button style={S.btnPrimary} onClick={handleExport} disabled={exporting}>
+              {exporting ? "Generating..." : "Download Statement"}
+            </button>
+          </>
+        )}
       </motion.div>
     </div>
   );
