@@ -54,7 +54,7 @@ const Icon = ({ name, size = 22, color = "currentColor" }: { name: string, size?
     refer: <><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2" stroke={color} strokeWidth="1.8" strokeLinecap="round"/><circle cx="9" cy="7" r="4" stroke={color} strokeWidth="1.8" fill="none"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75" stroke={color} strokeWidth="1.8" strokeLinecap="round"/></>,
     bank: <><line x1="3" y1="22" x2="21" y2="22" stroke={color} strokeWidth="1.8" strokeLinecap="round"/><line x1="6" y1="18" x2="6" y2="11" stroke={color} strokeWidth="1.8" strokeLinecap="round"/><line x1="10" y1="18" x2="10" y2="11" stroke={color} strokeWidth="1.8" strokeLinecap="round"/><line x1="14" y1="18" x2="14" y2="11" stroke={color} strokeWidth="1.8" strokeLinecap="round"/><line x1="18" y1="18" x2="18" y2="11" stroke={color} strokeWidth="1.8" strokeLinecap="round"/><polygon points="12 2 20 7 4 7" fill="none" stroke={color} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/></>,
     ussd: <><rect x="5" y="2" width="14" height="20" rx="2" stroke={color} strokeWidth="1.8" fill="none"/><line x1="9" y1="18" x2="15" y2="18" stroke={color} strokeWidth="1.8" strokeLinecap="round"/></>,
-    check_circle: <><circle cx="12" cy="12" r="10" fill="#00a859" stroke="none"/><polyline points="8 12 11 15 16 9" stroke="#fff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></>,
+    check_circle: <><circle cx="12" cy="12" r="10" fill="#0D60D8" stroke="none"/><polyline points="8 12 11 15 16 9" stroke="#fff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></>,
     warn_tri: <><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z" fill="#fff3cd" stroke="#f59e0b" strokeWidth="1.8"/><line x1="12" y1="9" x2="12" y2="13" stroke="#f59e0b" strokeWidth="2" strokeLinecap="round"/><line x1="12" y1="17" x2="12.01" y2="17" stroke="#f59e0b" strokeWidth="2" strokeLinecap="round"/></>,
     bulb: <><path d="M9 18h6M10 22h4M12 2v1M5.22 5.22l.71.71M18.78 5.22l-.71.71M2 12h1M21 12h1M12 7a5 5 0 00-5 5c0 2.5 2 4.5 4 5h2c2-.5 4-2.5 4-5a5 5 0 00-5-5z" stroke={color} strokeWidth="1.8" fill="none"/></>,
     phone: <><rect x="5" y="2" width="14" height="20" rx="2" stroke={color} strokeWidth="1.8" fill="none"/><line x1="12" y1="18" x2="12.01" y2="18" stroke={color} strokeWidth="2" strokeLinecap="round"/></>,
@@ -71,13 +71,59 @@ const Icon = ({ name, size = 22, color = "currentColor" }: { name: string, size?
 const S: Record<string, React.CSSProperties> = {
   modalBg: { position: "fixed", top: 0, left: 0, width: "100%", height: "100%", background: "rgba(0,0,0,0.55)", zIndex: 200, display: "flex", alignItems: "flex-end", justifyContent: "center" },
   modal: { background: "#fff", borderRadius: "24px 24px 0 0", width: "100%", maxWidth: 420, padding: "24px 20px 32px", maxHeight: "90vh", overflowY: "auto" },
-  btnPrimary: { background: "linear-gradient(135deg,#00a859,#00cc6a)", border: "none", borderRadius: 14, color: "#fff", fontWeight: 700, fontSize: 14, cursor: "pointer", padding: "14px", width: "100%", fontFamily: "inherit" },
+  btnPrimary: { background: "linear-gradient(135deg,#0D60D8,#1E88E5)", border: "none", borderRadius: 14, color: "#fff", fontWeight: 700, fontSize: 14, cursor: "pointer", padding: "14px", width: "100%", fontFamily: "inherit" },
   btnGhost: { background: "#fff", border: "2px solid #f0f0f0", borderRadius: 14, color: "#111", fontWeight: 600, fontSize: 14, cursor: "pointer", padding: "14px", width: "100%", fontFamily: "inherit" },
   input: { width: "100%", padding: "13px 14px", borderRadius: 12, border: "1.5px solid #e5e7eb", fontSize: 14, fontFamily: "inherit", background: "#fff", color: "#111", outline: "none" },
   card: { background: "#fff", borderRadius: 20, border: "1px solid #f0f0f0", boxShadow: "0 2px 12px rgba(0,0,0,0.04)" },
-  header: { background: "linear-gradient(145deg,#064e3b,#065f46 55%,#059669)", padding: "48px 18px 24px", position: "relative", overflow: "hidden" },
-  headerBlue: { background: "linear-gradient(145deg,#1e3a8a,#1e40af 55%,#3b82f6)", padding: "48px 18px 24px", position: "relative", overflow: "hidden" },
+  header: { background: "linear-gradient(145deg,#0A4BB3,#0D60D8 55%,#1E88E5)", padding: "48px 18px 24px", position: "relative", overflow: "hidden" },
+  headerBlue: { background: "linear-gradient(145deg,#0A4BB3,#0D60D8 55%,#1E88E5)", padding: "48px 18px 24px", position: "relative", overflow: "hidden" },
 };
+
+// ── Splash Screen ─────────────────────────────────────────────────────────────
+function SplashScreen() {
+  return (
+    <motion.div 
+      initial={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.5 }}
+      style={{ 
+        position: "fixed", 
+        top: 0, 
+        left: 0, 
+        width: "100%", 
+        height: "100%", 
+        background: "#0D60D8", 
+        zIndex: 1000, 
+        display: "flex", 
+        flexDirection: "column", 
+        alignItems: "center", 
+        justifyContent: "center",
+        color: "#fff",
+        textAlign: "center",
+        padding: 20
+      }}
+    >
+      <div style={{ flex: 1, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center" }}>
+        <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+          <svg width="60" height="60" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="10" y="35" width="80" height="55" rx="15" fill="white" />
+            <path d="M30 35V25a20 20 0 1140 0v10" stroke="white" strokeWidth="12" strokeLinecap="round" />
+            <circle cx="50" cy="62" r="10" fill="#0D60D8" />
+            <rect x="45" y="62" width="10" height="15" fill="#0D60D8" />
+          </svg>
+          <span style={{ fontSize: 44, fontWeight: 900, letterSpacing: -2 }}>piggyvest</span>
+        </div>
+      </div>
+      
+      <div style={{ paddingBottom: 60 }}>
+        <div style={{ fontSize: 24, fontWeight: 800, marginBottom: 12 }}>Save & invest with ease 🚀</div>
+        <div style={{ fontSize: 13, color: "rgba(255,255,255,0.8)", lineHeight: 1.5, maxWidth: 300 }}>
+          People have saved over <span style={{ fontWeight: 800, color: "#fff" }}>4 Trillion Naira</span> on Piggyvest in the last <span style={{ fontWeight: 800, color: "#fff" }}>10 years</span> - Let's get started!
+        </div>
+      </div>
+    </motion.div>
+  );
+}
 
 // ── PIN Screen ────────────────────────────────────────────────────────────────
 function PinScreen({ onUnlock }: { onUnlock: () => void }) {
@@ -110,10 +156,10 @@ function PinScreen({ onUnlock }: { onUnlock: () => void }) {
   const keys = [1, 2, 3, 4, 5, 6, 7, 8, 9, "", 0, "del"];
 
   return (
-    <div style={{ minHeight: "100vh", background: "linear-gradient(160deg,#00271c,#004d36 50%,#00a859)", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "0 28px", fontFamily: "system-ui,sans-serif" }}>
+    <div style={{ minHeight: "100vh", background: "linear-gradient(160deg,#001533,#0A4BB3 50%,#0D60D8)", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "0 28px", fontFamily: "system-ui,sans-serif" }}>
       <div style={{ marginBottom: 40, textAlign: "center" }}>
         <div style={{ width: 66, height: 66, borderRadius: 20, background: "#fff", display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 14px", boxShadow: "0 8px 28px rgba(0,0,0,0.25)" }}>
-          <Icon name="piggy" size={34} color="#00a859" />
+          <Icon name="piggy" size={34} color="#0D60D8" />
         </div>
         <div style={{ color: "rgba(255,255,255,0.65)", fontSize: 12, marginBottom: 4 }}>Welcome back</div>
         <div style={{ color: "#fff", fontSize: 17, fontWeight: 700, letterSpacing: 0.5 }}>{PHONE}</div>
@@ -197,9 +243,9 @@ function FundModal({ onClose }: { onClose: () => void }) {
   };
 
   const methods = [
-    { id: "card", icon: <Icon name="card" size={20} color="#00a859" />, label: "Debit / Credit Card", sub: "Visa, Mastercard, Verve" },
-    { id: "bank", icon: <Icon name="bank" size={20} color="#00a859" />, label: "Bank Transfer", sub: "Pay from any bank app instantly" },
-    { id: "ussd", icon: <Icon name="ussd" size={20} color="#00a859" />, label: "USSD", sub: "Dial *901# or *737# on your phone" },
+    { id: "card", icon: <Icon name="card" size={20} color="#0D60D8" />, label: "Debit / Credit Card", sub: "Visa, Mastercard, Verve" },
+    { id: "bank", icon: <Icon name="bank" size={20} color="#0D60D8" />, label: "Bank Transfer", sub: "Pay from any bank app instantly" },
+    { id: "ussd", icon: <Icon name="ussd" size={20} color="#0D60D8" />, label: "USSD", sub: "Dial *901# or *737# on your phone" },
   ];
 
   if (done) return (
@@ -233,13 +279,13 @@ function FundModal({ onClose }: { onClose: () => void }) {
             <div style={{ fontSize: 13, color: "#6b7280", marginBottom: 16 }}>Choose how you'd like to fund your savings</div>
             {methods.map(m => (
               <div key={m.id} onClick={() => { setMethod(m.id); setStep(1); }}
-                style={{ display: "flex", alignItems: "center", gap: 14, padding: "14px 16px", background: method === m.id ? "#e6f9f0" : "#f9fafb", borderRadius: 16, marginBottom: 10, cursor: "pointer", border: `2px solid ${method === m.id ? "#00a859" : "transparent"}`, transition: "all 0.15s" }}>
-                <div style={{ width: 44, height: 44, borderRadius: 13, background: "#e6f9f0", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>{m.icon}</div>
+                style={{ display: "flex", alignItems: "center", gap: 14, padding: "14px 16px", background: method === m.id ? "#eff6ff" : "#f9fafb", borderRadius: 16, marginBottom: 10, cursor: "pointer", border: `2px solid ${method === m.id ? "#0D60D8" : "transparent"}`, transition: "all 0.15s" }}>
+                <div style={{ width: 44, height: 44, borderRadius: 13, background: "#eff6ff", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>{m.icon}</div>
                 <div style={{ flex: 1 }}>
                   <div style={{ fontWeight: 700, fontSize: 14, color: "#111" }}>{m.label}</div>
                   <div style={{ fontSize: 11, color: "#9ca3af", marginTop: 2 }}>{m.sub}</div>
                 </div>
-                <div style={{ fontSize: 20, color: method === m.id ? "#00a859" : "#9ca3af" }}>›</div>
+                <div style={{ fontSize: 20, color: method === m.id ? "#0D60D8" : "#9ca3af" }}>›</div>
               </div>
             ))}
           </div>
@@ -256,7 +302,7 @@ function FundModal({ onClose }: { onClose: () => void }) {
             </div>
             <div style={{ display: "flex", gap: 8, marginBottom: 24 }}>
               {["5000", "10000", "20000", "50000"].map(v => (
-                <button key={v} onClick={() => setAmount(v)} style={{ flex: 1, padding: "8px", borderRadius: 10, border: "1.5px solid #f0f0f0", background: amount === v ? "#e6f9f0" : "#fff", color: amount === v ? "#00a859" : "#6b7280", fontSize: 12, fontWeight: 600, cursor: "pointer" }}>
+                <button key={v} onClick={() => setAmount(v)} style={{ flex: 1, padding: "8px", borderRadius: 10, border: "1.5px solid #f0f0f0", background: amount === v ? "#eff6ff" : "#fff", color: amount === v ? "#0D60D8" : "#6b7280", fontSize: 12, fontWeight: 600, cursor: "pointer" }}>
                   {fmt(parseInt(v)).split(".")[0]}
                 </button>
               ))}
@@ -301,8 +347,8 @@ function FundModal({ onClose }: { onClose: () => void }) {
               </div>
             ) : (
               <div style={{ textAlign: "center", padding: "20px 0" }}>
-                <div style={{ width: 64, height: 64, borderRadius: "50%", background: "#e6f9f0", display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 20px" }}>
-                  <Icon name={method === "bank" ? "bank" : "ussd"} size={32} color="#00a859" />
+                <div style={{ width: 64, height: 64, borderRadius: "50%", background: "#eff6ff", display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 20px" }}>
+                  <Icon name={method === "bank" ? "bank" : "ussd"} size={32} color="#0D60D8" />
                 </div>
                 <div style={{ fontSize: 16, fontWeight: 700, color: "#111", marginBottom: 8 }}>
                   {method === "bank" ? "Bank Transfer" : "USSD Payment"}
@@ -377,8 +423,8 @@ function ReferModal({ onClose }: { onClose: () => void }) {
     <div style={S.modalBg} onClick={onClose}>
       <motion.div initial={{ y: "100%" }} animate={{ y: 0 }} exit={{ y: "100%" }} style={S.modal} onClick={e => e.stopPropagation()}>
         <div style={{ textAlign: "center", padding: "10px 0" }}>
-          <div style={{ width: 64, height: 64, borderRadius: "50%", background: "#ecfdf5", display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 20px" }}>
-            <Icon name="refer" size={32} color="#059669" />
+          <div style={{ width: 64, height: 64, borderRadius: "50%", background: "#eff6ff", display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 20px" }}>
+            <Icon name="refer" size={32} color="#0D60D8" />
           </div>
           <div style={{ fontSize: 18, fontWeight: 800, color: "#111", marginBottom: 10 }}>Refer & Earn ₦1,000</div>
           <div style={{ fontSize: 13, color: "#6b7280", lineHeight: 1.6, marginBottom: 24 }}>
@@ -386,7 +432,7 @@ function ReferModal({ onClose }: { onClose: () => void }) {
           </div>
           <div style={{ background: "#f9fafb", border: "1.5px dashed #e5e7eb", borderRadius: 12, padding: "14px", marginBottom: 24, display: "flex", justifyContent: "space-between", alignItems: "center" }}>
             <span style={{ fontWeight: 700, color: "#111", letterSpacing: 1 }}>SHOLARIN13</span>
-            <span style={{ fontSize: 12, color: "#059669", fontWeight: 700, cursor: "pointer" }}>COPY</span>
+            <span style={{ fontSize: 12, color: "#0D60D8", fontWeight: 700, cursor: "pointer" }}>COPY</span>
           </div>
           <button style={S.btnPrimary} onClick={onClose}>Invite Friends</button>
         </div>
@@ -454,14 +500,14 @@ function Dashboard({ onNavigate }: { onNavigate: (s: string) => void }) {
       <div style={{ padding: "24px 18px" }}>
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 16 }}>
           <div style={{ fontSize: 16, fontWeight: 800, color: "#111" }}>My Savings</div>
-          <div onClick={() => onNavigate("save")} style={{ fontSize: 13, color: "#059669", fontWeight: 700, cursor: "pointer" }}>See all</div>
+          <div onClick={() => onNavigate("save")} style={{ fontSize: 13, color: "#0D60D8", fontWeight: 700, cursor: "pointer" }}>See all</div>
         </div>
 
         <div style={{ ...S.card, padding: 20, marginBottom: 14, cursor: "pointer" }} onClick={() => onNavigate("target")}>
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 12 }}>
             <div style={{ display: "flex", gap: 14, alignItems: "center" }}>
-              <div style={{ width: 44, height: 44, borderRadius: 14, background: "#ecfdf5", display: "flex", alignItems: "center", justifyContent: "center" }}>
-                <Icon name="target" color="#059669" size={24} />
+              <div style={{ width: 44, height: 44, borderRadius: 14, background: "#eff6ff", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                <Icon name="target" color="#0D60D8" size={24} />
               </div>
               <div>
                 <div style={{ fontWeight: 800, fontSize: 15, color: "#111" }}>Target Savings</div>
@@ -474,11 +520,11 @@ function Dashboard({ onNavigate }: { onNavigate: (s: string) => void }) {
             </div>
           </div>
           <div style={{ height: 6, background: "#f3f4f6", borderRadius: 3, overflow: "hidden", marginBottom: 12 }}>
-            <div style={{ width: "91.5%", height: "100%", background: "#059669", borderRadius: 3 }} />
+            <div style={{ width: "91.5%", height: "100%", background: "#0D60D8", borderRadius: 3 }} />
           </div>
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
             <div style={{ fontSize: 11, fontWeight: 700, color: "#6b7280" }}>91.5% of goal 🎯</div>
-            <div style={{ background: "#ecfdf5", color: "#059669", padding: "4px 10px", borderRadius: 10, fontSize: 11, fontWeight: 800 }}>30% p.a.</div>
+            <div style={{ background: "#eff6ff", color: "#0D60D8", padding: "4px 10px", borderRadius: 10, fontSize: 11, fontWeight: 800 }}>30% p.a.</div>
           </div>
         </div>
 
@@ -523,7 +569,7 @@ function SaveScreen({ onNavigate }: { onNavigate: (s: string) => void }) {
 
       <div style={{ padding: "24px 18px", display: "grid", gap: 16 }}>
         {[
-          { id: "target", label: "Target Savings", sub: "Emergency Saving", bal: 183000, rate: "30% p.a.", icon: "target", color: "#059669", bg: "#ecfdf5" },
+          { id: "target", label: "Target Savings", sub: "Emergency Saving", bal: 183000, rate: "30% p.a.", icon: "target", color: "#0D60D8", bg: "#eff6ff" },
           { id: "flex", label: "PiggyFlex", sub: "Flexible • Withdraw anytime", bal: 0, rate: "10% p.a.", icon: "piggy", color: "#d97706", bg: "#fffbeb" },
           { id: "lock", label: "SafeLock", sub: "Fixed • Up to 12 months", bal: 0, rate: "up to 16%", icon: "lock", color: "#7c3aed", bg: "#f5f3ff" },
         ].map(plan => (
@@ -587,7 +633,7 @@ function InvestScreen({ onSelect }: { onSelect: (p: any) => void }) {
                 </div>
               </div>
               <div style={{ textAlign: "right" }}>
-                <div style={{ fontWeight: 800, fontSize: 14, color: "#059669" }}>{p.rate}</div>
+                <div style={{ fontWeight: 800, fontSize: 14, color: "#0D60D8" }}>{p.rate}</div>
                 <div style={{ fontSize: 10, color: "#9ca3af", marginTop: 2 }}>returns</div>
               </div>
             </div>
@@ -736,7 +782,7 @@ function ExportModal({ onClose }: { onClose: () => void }) {
           <div style={{ fontSize: 13, color: "#6b7280", marginBottom: 12 }}>Export Format</div>
           <div style={{ display: "flex", gap: 12 }}>
             {["pdf", "excel"].map(f => (
-              <button key={f} onClick={() => setFormat(f)} style={{ flex: 1, padding: "12px", borderRadius: 12, border: `2px solid ${format === f ? "#00a859" : "#f0f0f0"}`, background: format === f ? "#e6f9f0" : "#fff", color: format === f ? "#00a859" : "#6b7280", fontWeight: 700, fontSize: 13, cursor: "pointer", textTransform: "uppercase" }}>
+              <button key={f} onClick={() => setFormat(f)} style={{ flex: 1, padding: "12px", borderRadius: 12, border: `2px solid ${format === f ? "#0D60D8" : "#f0f0f0"}`, background: format === f ? "#eff6ff" : "#fff", color: format === f ? "#0D60D8" : "#6b7280", fontWeight: 700, fontSize: 13, cursor: "pointer", textTransform: "uppercase" }}>
                 {f}
               </button>
             ))}
@@ -786,22 +832,22 @@ function TargetScreen({ onBack }: { onBack: () => void }) {
         <div style={{ marginTop: 24 }}>
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 16 }}>
             <div style={{ fontSize: 16, fontWeight: 800, color: "#111" }}>Transaction History</div>
-            <button onClick={() => setShowExport(true)} style={{ background: "#ecfdf5", border: "none", borderRadius: 8, padding: "6px 12px", color: "#059669", fontSize: 11, fontWeight: 700, cursor: "pointer" }}>
+            <button onClick={() => setShowExport(true)} style={{ background: "#eff6ff", border: "none", borderRadius: 8, padding: "6px 12px", color: "#0D60D8", fontSize: 11, fontWeight: 700, cursor: "pointer" }}>
               Export Statement
             </button>
           </div>
           <div style={{ ...S.card, padding: "0 16px" }}>
             {TXS.slice().reverse().map(tx => (
               <div key={tx.id} style={{ display: "flex", alignItems: "center", gap: 14, padding: "16px 0", borderBottom: "1px solid #f3f4f6" }}>
-                <div style={{ width: 36, height: 36, borderRadius: 10, background: tx.type === "credit" ? "#e6f9f0" : "#fef2f2", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
-                  <Icon name={tx.type === "credit" ? "up" : "down"} size={16} color={tx.type === "credit" ? "#00a859" : "#ef4444"} />
+                <div style={{ width: 36, height: 36, borderRadius: 10, background: tx.type === "credit" ? "#eff6ff" : "#fef2f2", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+                  <Icon name={tx.type === "credit" ? "up" : "down"} size={16} color={tx.type === "credit" ? "#0D60D8" : "#ef4444"} />
                 </div>
                 <div style={{ flex: 1 }}>
                   <div style={{ fontWeight: 700, fontSize: 13, color: "#111" }}>{tx.label}</div>
                   <div style={{ fontSize: 10, color: "#9ca3af", marginTop: 2 }}>{tx.date}</div>
                 </div>
                 <div style={{ textAlign: "right" }}>
-                  <div style={{ fontWeight: 800, fontSize: 13, color: tx.type === "credit" ? "#00a859" : "#ef4444" }}>
+                  <div style={{ fontWeight: 800, fontSize: 13, color: tx.type === "credit" ? "#0D60D8" : "#ef4444" }}>
                     {tx.type === "credit" ? "+" : "-"}{fmt(tx.amount).split(".")[0]}
                   </div>
                   <div style={{ fontSize: 10, color: "#9ca3af", marginTop: 2 }}>{fmt(tx.balance).split(".")[0]}</div>
@@ -855,7 +901,7 @@ function LinkedBanksModal({ onClose }: { onClose: () => void }) {
               <div style={{ fontWeight: 700, fontSize: 14, color: "#111" }}>GT Bank</div>
               <div style={{ fontSize: 12, color: "#6b7280", marginTop: 2 }}>0952729029 • Sholarin Samuel</div>
             </div>
-            <div style={{ color: "#059669", fontSize: 11, fontWeight: 700 }}>VERIFIED</div>
+            <div style={{ color: "#0D60D8", fontSize: 11, fontWeight: 700 }}>VERIFIED</div>
           </div>
           <div style={{ ...S.card, padding: 16, display: "flex", alignItems: "center", gap: 14 }}>
             <div style={{ width: 40, height: 40, borderRadius: 10, background: "#f3f4f6", display: "flex", alignItems: "center", justifyContent: "center" }}>
@@ -865,10 +911,10 @@ function LinkedBanksModal({ onClose }: { onClose: () => void }) {
               <div style={{ fontWeight: 700, fontSize: 14, color: "#111" }}>OPay / Play</div>
               <div style={{ fontSize: 12, color: "#6b7280", marginTop: 2 }}>8022324523 • Sholarin Samuel</div>
             </div>
-            <div style={{ color: "#059669", fontSize: 11, fontWeight: 700 }}>VERIFIED</div>
+            <div style={{ color: "#0D60D8", fontSize: 11, fontWeight: 700 }}>VERIFIED</div>
           </div>
         </div>
-        <button style={{ ...S.btnGhost, marginTop: 24, borderColor: "#059669", color: "#059669" }}>+ Add New Bank</button>
+        <button style={{ ...S.btnGhost, marginTop: 24, borderColor: "#0D60D8", color: "#0D60D8" }}>+ Add New Bank</button>
       </motion.div>
     </div>
   );
@@ -882,6 +928,12 @@ export default function App() {
   const [showBanks, setShowBanks] = useState(false);
   const [deferredPrompt, setDeferredPrompt] = useState<any>(null);
   const [showInstallBtn, setShowInstallBtn] = useState(false);
+  const [showSplash, setShowSplash] = useState(true);
+
+  useEffect(() => {
+    const timer = setTimeout(() => setShowSplash(false), 2500);
+    return () => clearTimeout(timer);
+  }, []);
 
   useEffect(() => {
     const handler = (e: any) => {
@@ -907,6 +959,10 @@ export default function App() {
 
   return (
     <div style={{ minHeight: "100vh", background: "#f9fafb", fontFamily: "system-ui,sans-serif", maxWidth: 420, margin: "0 auto", position: "relative" }}>
+      <AnimatePresence>
+        {showSplash && <SplashScreen />}
+      </AnimatePresence>
+      
       {nav === "home" && <Dashboard onNavigate={(s) => setNav(s)} />}
       {nav === "save" && <SaveScreen onNavigate={(s) => setNav(s)} />}
       {nav === "target" && <TargetScreen onBack={() => setNav("home")} />}
@@ -985,7 +1041,7 @@ export default function App() {
       {nav === "more" && (
         <div style={{ padding: 20, paddingBottom: 100 }}>
           <div style={{ display: "flex", alignItems: "center", gap: 16, marginBottom: 32 }}>
-            <div style={{ width: 60, height: 60, borderRadius: 20, background: "#059669", display: "flex", alignItems: "center", justifyContent: "center", color: "#fff", fontSize: 24, fontWeight: 800 }}>SS</div>
+            <div style={{ width: 60, height: 60, borderRadius: 20, background: "#0D60D8", display: "flex", alignItems: "center", justifyContent: "center", color: "#fff", fontSize: 24, fontWeight: 800 }}>SS</div>
             <div>
               <div style={{ fontSize: 18, fontWeight: 800 }}>{FULL_NAME}</div>
               <div style={{ fontSize: 13, color: "#6b7280" }}>{PHONE}</div>
@@ -995,10 +1051,10 @@ export default function App() {
             {showInstallBtn && (
               <div onClick={handleInstall} style={{ padding: "18px 0", borderBottom: "1px solid #f3f4f6", display: "flex", justifyContent: "space-between", alignItems: "center", cursor: "pointer" }}>
                 <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-                  <div style={{ width: 32, height: 32, borderRadius: 10, background: "#ecfdf5", display: "flex", alignItems: "center", justifyContent: "center" }}>
-                    <Icon name="topup" color="#059669" size={18} />
+                  <div style={{ width: 32, height: 32, borderRadius: 10, background: "#eff6ff", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                    <Icon name="topup" color="#0D60D8" size={18} />
                   </div>
-                  <span style={{ fontWeight: 700, color: "#059669" }}>Install PiggyVest App</span>
+                  <span style={{ fontWeight: 700, color: "#0D60D8" }}>Install PiggyVest App</span>
                 </div>
                 <Icon name="back" size={16} color="#9ca3af" />
               </div>
@@ -1029,7 +1085,7 @@ export default function App() {
             <div style={{ fontSize: 12, color: "#6b7280", marginBottom: 4 }}>Email Address</div>
             <div style={{ fontWeight: 700, color: "#111", marginBottom: 16 }}>ayomidesholarin13@gmail.com</div>
             <div style={{ fontSize: 12, color: "#6b7280", marginBottom: 4 }}>BVN Status</div>
-            <div style={{ fontWeight: 700, color: "#059669" }}>Verified ✅</div>
+            <div style={{ fontWeight: 700, color: "#0D60D8" }}>Verified ✅</div>
           </div>
           <button onClick={() => setComingSoon("Profile Editing")} style={S.btnGhost}>Edit Profile</button>
         </div>
@@ -1045,7 +1101,7 @@ export default function App() {
           { id: "more", label: "More", icon: "more" },
         ].map(item => (
           <button key={item.id} onClick={() => setNav(item.id)}
-            style={{ flex: 1, background: "none", border: "none", display: "flex", flexDirection: "column", alignItems: "center", gap: 4, cursor: "pointer", color: nav === item.id || (nav === "target" && item.id === "home") ? "#059669" : "#9ca3af" }}>
+            style={{ flex: 1, background: "none", border: "none", display: "flex", flexDirection: "column", alignItems: "center", gap: 4, cursor: "pointer", color: nav === item.id || (nav === "target" && item.id === "home") ? "#0D60D8" : "#9ca3af" }}>
             <Icon name={item.icon} size={22} color="currentColor" />
             <span style={{ fontSize: 10, fontWeight: 700 }}>{item.label}</span>
           </button>
