@@ -3,6 +3,9 @@ import { motion, AnimatePresence } from "motion/react";
 import * as XLSX from 'xlsx';
 import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
+import * as XLSX from 'xlsx';
+import jsPDF from 'jspdf';
+import autoTable from 'jspdf-autotable';
 
 const PIN = "2723";
 const PHONE = "08022324523";
@@ -36,7 +39,7 @@ const fmt = (n: number) => "₦" + Number(n).toLocaleString("en-NG", { minimumFr
 const Icon = ({ name, size = 22, color = "currentColor" }: { name: string, size?: number, color?: string }) => {
   const icons: Record<string, React.JSX.Element> = {
     home: <><path d="M3 9.5L12 3l9 6.5V20a1 1 0 01-1 1H4a1 1 0 01-1-1V9.5z" stroke={color} strokeWidth="1.8" fill="none"/><rect x="9" y="13" width="6" height="8" rx="1" stroke={color} strokeWidth="1.8" fill="none"/></>,
-    piggy: <><path d="M19 11c0-4-3.13-7-7-7S5 7 5 11c0 1.85.68 3.54 1.79 4.85L6 19h2.5l.5-1.5h6l.5 1.5H18l-.79-3.15A6.95 6.95 0 0019 11z" stroke={color} strokeWidth="1.8" fill={color === "#fff" ? "#fff" : "none"}/><circle cx="15" cy="10" r="1" fill={color === "#fff" ? "#0D60D8" : color}/><path d="M19 10h2" stroke={color} strokeWidth="1.8" strokeLinecap="round"/></>,
+    piggy: <><path d="M19 11c0-4-3.13-7-7-7S5 7 5 11c0 1.85.68 3.54 1.79 4.85L6 19h2.5l.5-1.5h6l.5 1.5H18l-.79-3.15A6.95 6.95 0 0019 11z" stroke={color} strokeWidth="1.8" fill={color === "#fff" ? "#fff" : "none"}/><circle cx="15" cy="10" r="1.5" fill={color === "#fff" ? "#0D60D8" : color}/><path d="M19 10h2c1 0 2 1 2 2v1c0 1-1 2-2 2h-1" stroke={color} strokeWidth="1.8" strokeLinecap="round" fill="none"/><path d="M12 4v-1c0-1 1-1 1-1" stroke={color} strokeWidth="1.5" strokeLinecap="round" fill="none"/></>,
     save: <><path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z" stroke={color} strokeWidth="1.8" fill="none"/><polyline points="17 21 17 13 7 13 7 21" stroke={color} strokeWidth="1.8" fill="none"/><polyline points="7 3 7 8 15 8" stroke={color} strokeWidth="1.8" fill="none"/></>,
     user: <><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2" stroke={color} strokeWidth="1.8" strokeLinecap="round"/><circle cx="12" cy="7" r="4" stroke={color} strokeWidth="1.8" fill="none"/></>,
     card: <><rect x="2" y="5" width="20" height="14" rx="2" stroke={color} strokeWidth="1.8" fill="none"/><line x1="2" y1="10" x2="22" y2="10" stroke={color} strokeWidth="1.8"/><line x1="6" y1="15" x2="10" y2="15" stroke={color} strokeWidth="1.8" strokeLinecap="round"/></>,
@@ -185,40 +188,107 @@ function PinScreen({ onUnlock }: { onUnlock: () => void }) {
 
 // ── Withdraw Modal ────────────────────────────────────────────────────────────
 function WithdrawModal({ onClose }: { onClose: () => void }) {
+  const [step, setStep] = useState(0);
+  const [bank, setBank] = useState("");
+  const [account, setAccount] = useState("");
+  const [amount, setAmount] = useState("183000");
+  const [processing, setProcessing] = useState(false);
+
+  const handleWithdraw = () => {
+    setProcessing(true);
+    setTimeout(() => {
+      setProcessing(false);
+      setStep(2);
+    }, 2500);
+  };
+
   return (
     <div style={S.modalBg} onClick={onClose}>
       <motion.div initial={{ y: "100%" }} animate={{ y: 0 }} exit={{ y: "100%" }} transition={{ type: "spring", damping: 25, stiffness: 300 }}
         style={S.modal} onClick={e => e.stopPropagation()}>
-        <div style={{ display: "flex", justifyContent: "center", marginBottom: 16 }}>
-          <Icon name="warn_tri" size={52} />
-        </div>
-        <div style={{ textAlign: "center", marginBottom: 20 }}>
-          <div style={{ fontSize: 17, fontWeight: 800, color: "#111", marginBottom: 10 }}>Withdrawal Restricted</div>
-          <div style={{ fontSize: 13, color: "#6b7280", lineHeight: 1.7 }}>
-            Your <strong style={{ color: "#111" }}>9-month savings plan</strong> has not been completed yet, and your target of <strong style={{ color: "#111" }}>₦200,000</strong> has not been reached.
-            <br /><br />
-            Withdrawing now will <span style={{ color: "#ef4444", fontWeight: 700 }}>forfeit all accumulated interest</span>.
-          </div>
-        </div>
-        <div style={{ background: "#fffbeb", border: "1.5px solid #fde68a", borderRadius: 16, padding: "16px", marginBottom: 20 }}>
-          <div style={{ display: "flex", gap: 12, alignItems: "center" }}>
-            <div style={{ fontSize: 28, flexShrink: 0 }}>🗓️</div>
-            <div>
-              <div style={{ fontSize: 11, fontWeight: 700, color: "#92400e", textTransform: "uppercase", letterSpacing: 0.5, marginBottom: 2 }}>Earliest Penalty-Free Withdrawal</div>
-              <div style={{ fontSize: 18, fontWeight: 800, color: "#b45309" }}>April 28, 2026</div>
-              <div style={{ fontSize: 11, color: "#a16207", marginTop: 3 }}>Only 46 days away — you're almost there! 💪</div>
+        
+        {step === 0 && (
+          <>
+            <div style={{ display: "flex", justifyContent: "center", marginBottom: 16 }}>
+              <div style={{ width: 64, height: 64, borderRadius: "50%", background: "#eff6ff", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                <Icon name="piggy" size={40} color="#0D60D8" />
+              </div>
             </div>
+            <div style={{ textAlign: "center", marginBottom: 20 }}>
+              <div style={{ fontSize: 18, fontWeight: 800, color: "#111", marginBottom: 10 }}>Target Maturity Reached! 🥳</div>
+              <div style={{ fontSize: 13, color: "#6b7280", lineHeight: 1.7 }}>
+                Congratulations! Your savings target has matured as of <strong style={{ color: "#111" }}>April 28, 2026</strong>. 
+                You can now withdraw your funds to your preferred bank account without any penalties.
+              </div>
+            </div>
+            <div style={{ background: "#f0fdf4", border: "1.5px solid #bbf7d0", borderRadius: 16, padding: "16px", marginBottom: 20 }}>
+              <div style={{ display: "flex", gap: 12, alignItems: "center" }}>
+                <div style={{ fontSize: 24, flexShrink: 0 }}>💰</div>
+                <div>
+                  <div style={{ fontSize: 11, fontWeight: 700, color: "#166534", textTransform: "uppercase", letterSpacing: 0.5, marginBottom: 2 }}>Available for Withdrawal</div>
+                  <div style={{ fontSize: 22, fontWeight: 900, color: "#15803d" }}>{fmt(parseFloat(amount))}</div>
+                </div>
+              </div>
+            </div>
+            <div style={{ display: "flex", gap: 10 }}>
+              <button onClick={onClose} style={{ ...S.btnGhost, flex: 1 }}>Not Now</button>
+              <button onClick={() => setStep(1)} style={{ ...S.btnPrimary, flex: 1 }}>Withdraw Now</button>
+            </div>
+          </>
+        )}
+
+        {step === 1 && (
+          <>
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 20 }}>
+              <div style={{ fontSize: 15, fontWeight: 800, color: "#111" }}>Withdrawal Details</div>
+              <button onClick={onClose} style={{ background: "none", border: "none", fontSize: 20, color: "#9ca3af", cursor: "pointer" }}>✕</button>
+            </div>
+            <div style={{ marginBottom: 20 }}>
+              <label style={{ fontSize: 12, fontWeight: 700, color: "#6b7280", marginBottom: 8, display: "block" }}>Amount to Withdraw</label>
+              <div style={{ position: "relative" }}>
+                <span style={{ position: "absolute", left: 14, top: "50%", transform: "translateY(-50%)", fontWeight: 700, color: "#111" }}>₦</span>
+                <input type="number" readOnly value={amount} style={{ ...S.input, paddingLeft: 30, background: "#f9fafb" }} />
+              </div>
+            </div>
+            <div style={{ marginBottom: 16 }}>
+              <label style={{ fontSize: 12, fontWeight: 700, color: "#6b7280", marginBottom: 8, display: "block" }}>Select Beneficiary Bank</label>
+              <select value={bank} onChange={(e) => setBank(e.target.value)} style={S.input}>
+                <option value="">Select a bank</option>
+                <option value="access">Access Bank</option>
+                <option value="gtb">GTBank</option>
+                <option value="zenith">Zenith Bank</option>
+                <option value="kuda">Kuda MFB</option>
+                <option value="opay">OPay</option>
+              </select>
+            </div>
+            <div style={{ marginBottom: 24 }}>
+              <label style={{ fontSize: 12, fontWeight: 700, color: "#6b7280", marginBottom: 8, display: "block" }}>Account Number</label>
+              <input type="tel" maxLength={10} placeholder="0123456789" value={account} onChange={(e) => setAccount(e.target.value.replace(/\D/g, ""))} style={S.input} />
+              {account.length === 10 && <div style={{ fontSize: 11, color: "#15803d", fontWeight: 600, marginTop: 6 }}>✅ Account Name: {FULL_NAME.toUpperCase()}</div>}
+            </div>
+            <button disabled={!bank || account.length < 10 || processing} onClick={handleWithdraw} style={{ ...S.btnPrimary, opacity: (!bank || account.length < 10) ? 0.6 : 1 }}>
+              {processing ? "Initiating Withdrawal..." : "Withdraw Funds"}
+            </button>
+          </>
+        )}
+
+        {step === 2 && (
+          <div style={{ textAlign: "center", padding: "10px 0" }}>
+            <div style={{ display: "flex", justifyContent: "center", marginBottom: 20 }}>
+              <div style={{ width: 72, height: 72, borderRadius: "50%", background: "#fef9c3", display: "flex", alignItems: "center", justifyContent: "center", animation: "pulse 2s infinite" }}>
+                <div style={{ fontSize: 32 }}>⏳</div>
+              </div>
+            </div>
+            <div style={{ fontSize: 20, fontWeight: 800, color: "#111", marginBottom: 12 }}>Withdrawal Processing</div>
+            <div style={{ fontSize: 14, color: "#6b7280", lineHeight: 1.6, marginBottom: 24 }}>
+              Your withdrawal of <strong style={{ color: "#111" }}>{fmt(parseFloat(amount))}</strong> to <strong style={{ color: "#111" }}>{account} ({(bank || "").toUpperCase()})</strong> has been initiated successfully.
+              <br /><br />
+              Please note that funds will be released in <strong style={{ color: "#0D60D8" }}>less than or up to 24 hours</strong>. You will receive a notification once the transfer is completed.
+            </div>
+            <button style={S.btnPrimary} onClick={onClose}>I Understand</button>
+            <style>{`@keyframes pulse { 0% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.1); opacity: 0.8; } 100% { transform: scale(1); opacity: 1; } }`}</style>
           </div>
-        </div>
-        <div style={{ background: "#fef2f2", borderRadius: 12, padding: "12px 14px", marginBottom: 20 }}>
-          <div style={{ fontSize: 12, color: "#ef4444", fontWeight: 600 }}>⚠️ This target is locked until the maturity date.</div>
-        </div>
-        <div style={{ display: "flex", gap: 10 }}>
-          <button onClick={onClose} style={{ ...S.btnGhost, flex: 1 }}>Go Back</button>
-          <button disabled style={{ flex: 1, background: "#e5e7eb", border: "none", borderRadius: 14, color: "#9ca3af", fontWeight: 700, fontSize: 13, cursor: "not-allowed", padding: 14, fontFamily: "inherit" }}>
-            Locked
-          </button>
-        </div>
+        )}
       </motion.div>
     </div>
   );
